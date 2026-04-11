@@ -5,32 +5,42 @@ class CurrencyConverterMaterialPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    final border = OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10),
+      borderSide: const BorderSide(
+        color: Colors.black,
+        width: 2,
+      ),
+    );
+
+    return Scaffold(
       backgroundColor: Colors.grey,
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center ,
             children: [
-              Text("0.01",
-              style: TextStyle(
+              const Text("0.00",
+              style:  TextStyle(
                 fontSize: 45,
                 fontWeight: FontWeight.bold,
                 color: Color.fromARGB(255, 255, 255, 255),
                 backgroundColor: Color.fromARGB(255, 255, 0, 0),
               ),
               ),TextField(
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.black
                 ),
                 decoration: InputDecoration(
                     hintText: "Please Entry Your ammount",
-                    hintStyle: TextStyle(
+                    hintStyle: const TextStyle(
                       color: Colors.black
                     ),
-                    prefixIcon: Icon(Icons.monetization_on),
+                    prefixIcon: const Icon(Icons.monetization_on),
                     prefixIconColor: Colors.black,
                     filled: true,
                     fillColor: Colors.white,
+                    focusedBorder: border,
+                    enabledBorder: border,
                   ),
                 ),
             ], 
@@ -39,6 +49,6 @@ class CurrencyConverterMaterialPage extends StatelessWidget {
       );
   }
 }
-// 10:26
+// 10:50
 
 

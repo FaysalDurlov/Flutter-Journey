@@ -22,15 +22,6 @@ void main(){
 
 
 
-
-
-
-
-
-
-
-
-
 //================================= Widgets =====================================
 
 // types of widgets:
@@ -163,6 +154,33 @@ Widget build(BuildContext context) {
 /* Note: there is a widget tree is forming its standard to extract all the widget and put every piace on separate Folder.
   Basically We import and Export Class just like In JS to organize our Widgets
 */
+
+
+
+
+//*  Important When a mother widget is constant its child or inside of that widget tree all must be constant other wise it will throw error
+/* for every const parent widget the child widget must also need to be cost
+    but a non cost parent may have cost child
+*/
+
+
+@override
+Widget build(BuildContext context) {
+  return MaterialApp(
+    home: const Scaffold(   // here the scaffold is const
+      body: Center(
+        child: Text("Hello World !!!"),
+      ),
+    ),
+  );
+}
+
+// since the scaffold is cost so all the widget inside of the scaffold must be also scaffold
+
+
+
+
+
 
 
 
@@ -304,6 +322,8 @@ Text("0.00",
       );
   }
 
+
+
 //=================================  TextField Widget =====================================
 
 /*
@@ -376,3 +396,107 @@ decoration: InputDecoration(
   so to actully tell flutter to put that color in the widget we type  [  filled: true  ]
   
 */
+
+
+
+// TextField -> InputDecoration ->  focusedBorder
+TextField(
+style: const TextStyle(
+  color: Colors.black
+),
+decoration: InputDecoration(
+    hintText: "Please Entry Your ammount",
+    hintStyle: const TextStyle(
+      color: Colors.black
+    ),
+    prefixIcon: const Icon(Icons.monetization_on),
+    prefixIconColor: Colors.black,
+    filled: true,
+    fillColor: Colors.white,
+    focusedBorder: OutlineInputBorder(
+      // focuseBorder -> when the writting cursure is in the Textfield (its called focuse)
+      borderRadius: BorderRadius.circular(10),
+      borderSide: const BorderSide(
+        color: Colors.red,
+        width: 2,
+        style: BorderStyle.solid,
+        strokeAlign: BorderSide.strokeAlignOutside,
+        // this strokeAlign is for the border stroke does it inside or ourside of the part of the text field
+      ),
+    ),
+  ),
+)
+
+// reminder:   Important When a mother widget is constant its child or inside of that widget tree all must be constant other wise it will throw error
+
+
+// TextField -> InputDecoration ->  enableBorder
+TextField(
+style: const TextStyle(
+  color: Colors.black
+),
+decoration: InputDecoration(
+    hintText: "Please Entry Your ammount",
+    hintStyle: const TextStyle(
+      color: Colors.black
+    ),
+    prefixIcon: const Icon(Icons.monetization_on),
+    prefixIconColor: Colors.black,
+    filled: true,
+    fillColor: Colors.white,
+    focusedBorder: OutlineInputBorder(
+      // focuseBorder -> when the writting cursure is in the Textfield (its called focuse)
+      borderRadius: BorderRadius.circular(10),
+      borderSide: const BorderSide(
+        color: Colors.black,
+        width: 2,
+        // this strokeAlign is for the border stroke does it inside or ourside of the part of the text field
+      ),
+    ),
+    
+    // copy the same design from focuse
+    enabledBorder: OutlineInputBorder(
+      // focuseBorder -> when the writting cursure is in the Textfield (its called focuse)
+      borderRadius: BorderRadius.circular(10),
+      borderSide: const BorderSide(
+        color: Colors.black,
+        width: 2,
+        // this strokeAlign is for the border stroke does it inside or ourside of the part of the text field
+      ),
+    ),
+  ),
+)
+
+/*
+  previously we used focuseBorder. so inside that argument we have some designs related to textfield those designs is applied only when we 
+  focuse(meaning writting something or our curser is in the textfield) on the textfield
+
+  so then we restart the app we see another design then when we use the textfield or we can say focus on the textfield we get our desire design thatw e implemented
+
+  therefore we use the same design inside of "focusedBorder" in the "enabledBorder"
+
+  here "enabledBorder" allows use to put the design in the textfield in the start of the app
+  so we have  design before focus and after focus. so we made both designs same so it give a illusion that the textfield has a constant designs but
+  we know it is applying same design in 2 steps
+
+
+  Tip: since we using same code we might save it in a variable and reuse it again;
+  like:
+
+*/
+final border = OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10),
+      borderSide: const BorderSide(
+        color: Colors.black,
+        width: 2,
+      ),
+);
+
+// then we can use:
+decoration: InputDecoration(
+    focusedBorder: border
+    enabledBorder: border
+),
+
+
+
