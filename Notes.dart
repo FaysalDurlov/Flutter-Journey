@@ -500,3 +500,44 @@ decoration: InputDecoration(
 
 
 
+//=================================  Padding & Container Widget =====================================
+Container(
+  width: 200,
+  height: 100,
+  padding: EdgeInsets.all(16),
+  margin: EdgeInsets.symmetric(vertical: 8),
+  decoration: BoxDecoration(
+    color: Colors.blue,
+    borderRadius: BorderRadius.circular(8),
+    boxShadow: [
+      BoxShadow(
+        color: Colors.grey.withOpacity(0.3),
+        spreadRadius: 2,
+        blurRadius: 5,
+      ),
+    ],
+  ),
+  child: Text('Hello Container!'),
+)
+
+// in contaner we can cutomize more but in padding widgets we can only wrap a anoither widget and set padding property nothing more
+
+
+//=================================  Button Widget =====================================
+
+/*
+  in Material Ui there are 2 types of button 
+  1. raised
+  2. appears like Text
+*/
+
+
+// for testing we can print in debug mode my checking with if condition
+TextButton(
+  onPressed: (){
+    if(kDebugMode){
+      print("Button Click");
+    }
+  }, 
+  child: const Text("Click Me"),
+)

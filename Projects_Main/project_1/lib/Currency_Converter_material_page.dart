@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class CurrencyConverterMaterialPage extends StatelessWidget {
@@ -13,42 +14,97 @@ class CurrencyConverterMaterialPage extends StatelessWidget {
       ),
     );
 
-    return Scaffold(
-      backgroundColor: Colors.grey,
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center ,
-            children: [
-              const Text("0.00",
-              style:  TextStyle(
-                fontSize: 45,
-                fontWeight: FontWeight.bold,
-                color: Color.fromARGB(255, 255, 255, 255),
-                backgroundColor: Color.fromARGB(255, 255, 0, 0),
-              ),
-              ),TextField(
-                style: const TextStyle(
-                  color: Colors.black
+    return MaterialApp(
+      home: Scaffold(
+        backgroundColor: Colors.grey,
+          body: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center ,
+              children: [
+                const Text("0.00",
+                style:  TextStyle(
+                  fontSize: 45,
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromARGB(255, 255, 255, 255),
+                  backgroundColor: Color.fromARGB(255, 255, 0, 0),
                 ),
-                decoration: InputDecoration(
-                    hintText: "Please Entry Your ammount",
-                    hintStyle: const TextStyle(
+                ),Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: TextField(
+                    keyboardType: const TextInputType.numberWithOptions(
+                      decimal: true,
+                    ),
+                    style: const TextStyle(
                       color: Colors.black
                     ),
-                    prefixIcon: const Icon(Icons.monetization_on),
-                    prefixIconColor: Colors.black,
-                    filled: true,
-                    fillColor: Colors.white,
-                    focusedBorder: border,
-                    enabledBorder: border,
+                    decoration: InputDecoration(
+                        hintText: "Please Entry Your Ammount",
+                        hintStyle: const TextStyle(
+                          color: Colors.black
+                        ),
+                        prefixIcon: const Icon(Icons.monetization_on),
+                        prefixIconColor: Colors.black,
+                        filled: true,
+                        fillColor: Colors.white,
+                        focusedBorder: border,
+                        enabledBorder: border,
+                      ),
+                    ),
+                ),
+                // Button
+                Container(
+                  padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+                  child: TextButton(
+                    onPressed: (){
+                      if(kDebugMode){
+                        print("Button Click");
+                      }
+                    },
+                    style: const ButtonStyle(
+                      foregroundColor: WidgetStatePropertyAll(Colors.white),
+                      backgroundColor: WidgetStatePropertyAll(Colors.black),
+                      fixedSize: WidgetStatePropertyAll(Size(410, 50)),
+                      shape: WidgetStatePropertyAll(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(4)
+                            )
+                          )
+                        )
+                    ), 
+                    child: const Text("CONVERT"),
                   ),
                 ),
-            ], 
+                Container(
+                  padding: EdgeInsets.only(left: 10, right: 10),
+                  child: TextButton(
+                    onPressed: (){
+                      if(kDebugMode){
+                        print("Button Click");
+                      }
+                    },
+                    style: const ButtonStyle(
+                      foregroundColor: WidgetStatePropertyAll(Colors.white),
+                      backgroundColor: WidgetStatePropertyAll(Colors.black),
+                      fixedSize: WidgetStatePropertyAll(Size(double.infinity, 50)),
+                      shape: WidgetStatePropertyAll(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(4)
+                            )
+                          )
+                        )
+                    ), 
+                    child: const Text("CONVERT"),
+                  ),
+                )
+              ], 
+            ),
           ),
         ),
-      );
+    );
   }
 }
-// 10:50
+// 11:29
 
 
