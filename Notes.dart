@@ -529,6 +529,7 @@ Container(
   in Material Ui there are 2 types of button 
   1. raised
   2. appears like Text
+
 */
 
 
@@ -541,3 +542,256 @@ TextButton(
   }, 
   child: const Text("Click Me"),
 )
+
+// button style 
+//ex1 
+ButtonStyle(
+    foregroundColor: WidgetStatePropertyAll(Colors.white),
+    backgroundColor: WidgetStatePropertyAll(Colors.black),
+    minimumSize: WidgetStatePropertyAll(Size(double.infinity, 50)),
+    shape: WidgetStatePropertyAll(
+      RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(4)
+          )
+        )
+      )
+)
+//ex2
+ButtonStyle(
+    foregroundColor: WidgetStatePropertyAll(Colors.white),
+    backgroundColor: WidgetStatePropertyAll(Colors.black),
+    maximumSize: WidgetStatePropertyAll(Size(double.infinity, 50)),
+    shape: WidgetStatePropertyAll(
+      RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(4)
+          )
+        )
+      )
+)
+
+/*
+  ex1 explained => here the minimumsize is saying button needs to atlest take as much space left so button must take all space. (even if there is no text inside button the size
+                        must take all the space)
+  ex2 explained => here maximumSize is saying you can go to max this size but you don't need to if there is not much contained
+                    so here I have a small word in button so the button stays small as much it needs to be
+
+*/
+
+
+// now lets try raised Button (ElevatedButton)
+Container( // example of ElevatedButton
+  margin: EdgeInsets.only(top: 10),
+  padding: EdgeInsets.only(left: 10, right: 10),
+  child: ElevatedButton(
+    onPressed: (){
+      if(kDebugMode){
+        print("Button Click");
+      }
+    },
+    style: const ButtonStyle(
+      elevation: WidgetStatePropertyAll(50),
+      foregroundColor: WidgetStatePropertyAll(Colors.white),
+      backgroundColor: WidgetStatePropertyAll(Colors.black),
+      fixedSize: WidgetStatePropertyAll(Size(410, 50)),
+      shape: WidgetStatePropertyAll(
+        RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(4)
+            )
+          )
+        )
+    ), 
+    child: const Text("CONVERT"),
+  ),
+)
+
+// Notice how we used WidgetStatePropertyAll() all the time we can skip this by only using TextButton.StyleFrom()
+Container( // example of TextButton
+  padding: EdgeInsets.only(left: 10, right: 10),
+  child: TextButton(
+    onPressed: (){
+      if(kDebugMode){
+        print("Button Click");
+      }
+    },
+    style: TextButton.styleFrom(
+      foregroundColor: Colors.white,
+      backgroundColor: Colors.black,
+      fixedSize: const Size(410, 50),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+              Radius.circular(10)
+            )
+        )
+    ),
+    child: const Text("CONVERT")
+  )
+)
+
+// =============================================================== AppBar Widget =================================================
+/*  
+  Appbar has many name perameter lets talk about 2
+  1. actions (we can give a list of widgets) that will be shown on the top right corner of the screeen
+  2. leading (we can only give only one widger) that will be shown on the top left corner of the screeen
+      altough in example it has text but generaly its used for icon picture logo etc for app
+
+*/
+
+//example
+Scaffold(
+  backgroundColor: Colors.grey,
+  appBar: AppBar(
+    title: const Text("Currency Converter",
+      style: TextStyle(
+        color: Colors.white,
+        fontWeight: FontWeight.bold
+      ),
+    ),
+    centerTitle: true,
+    backgroundColor: Colors.grey,
+    elevation: 30,
+    shadowColor: Colors.black,
+    actions: [                  // action argumnet of AppBar
+      Text("widget 1"),
+      Text("widget 2")
+    ],
+    leading: Text("widget_1"), // leading argumnet of AppBar
+  )
+)
+
+
+// ======================================================================  Stateful widgets ===================================
+
+// example_1 (throws error)
+class MyApp extends StatelessWidget{
+  const MyApp({super.key});
+  int x = 0;
+  @override
+  Widget build(BuildContext context) {
+    return const CurrencyConverterMaterialPage();
+  }
+}
+
+// example_2 (correct)
+class MyApp extends StatelessWidget{
+  const MyApp({super.key});
+  @override
+  Widget build(BuildContext context) {
+    int x = 0;
+    return const CurrencyConverterMaterialPage();
+  }
+}
+
+/*
+  explanation:
+
+  here in ex_1 we are extending a stateless widget. so thre property of stateless is inside of a stateless nothing can be changable or mutable 
+    inshort stateless is immutable so if we used (const x = 0) or (final x = 0)  then its fine but except that it means we are changing the varibale which is not allowed in
+    stateless widget
+
+  so why ex_2 works?
+  here we have a function which is "build" incide that function if we craeted a varibale that means it is a local varibale which in not inside of the stateless widget
+    so bcz of the local varibale we can make changes inside that 
+
+*/
+
+
+//========= Why use statefull widget ???? =====
+
+class MyApp extends StatelessWidget{
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    int x = 0;
+    return const scaffold(
+      body: Text(x.toString())
+      /*  
+          let say we change the value of x here. so what will happen after this?
+            1. the value of x will be changed !
+            2. since we didn't call build(buildcontext context). so we will not see any changes visually but x has already changed !
+
+          so how can we show the Text in app?
+
+          problem :
+          if we change the x value inside here then again call build() function 
+          it will build the text with x = 0 bcz thats how we written it and we can't use a varible outside of the build() 
+          so what can we do there we are stuck !!!!
+
+          Solution : we use satedful widget here
+
+      */
+    );
+  }
+}
+
+
+// how can we use syntax for StatefulWidgets ?
+
+// First we extend the class for Sateful
+class MyClassForStateFul extends StatefulWidget{
+
+  const MyClassForStateFul({super.key});
+
+
+
+
+  // Inside this we need to  create a new state that can our class use
+  @override
+  State createState()=> State(); // this requires a Type of State. (State is a type like int,double,String etc)
+  // (Don't use this like this below there is a line that we gonna use)
+
+  // but we can't use State() like this cz this is abstruct class so we also need to extend State class;
+
+  // so we will use this line
+  @override
+  State createState()=> _MyClassForStateFul_State();
+}
+
+
+// since we can't use a abstruct State we will create one and pass it to our public statefulWidget class
+class _MyPrivateClassForStateFul_State extends State{
+  // here I have created my own State that I made private for sequirity. if I make it public class and use it still that will work in both
+  // but its good practise to use as private
+
+
+
+
+  double x = 23.0; // in this state we can use varible outsite of the function.
+  // we only can use this in a state class not in stateless or statefull class bcz both are immutable class
+
+
+
+  // inside state we also need to override the build function like stateless
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold();
+  }
+}
+
+/*
+    here using this what I cant do is I can use a variable inside of the class wherever I want 
+    for this feature we need stateful widget
+
+*/
+
+// Finaly we get 
+// example of stateful widget
+class CurrencyConverterMaterialPagee extends StatefulWidget{
+
+  const CurrencyConverterMaterialPagee({super.key});
+
+  @override
+  State<CurrencyConverterMaterialPagee> createState()=>_CurrencyConverterMaterialPagee();
+}
+
+class _CurrencyConverterMaterialPagee extends State<CurrencyConverterMaterialPagee>{
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold();
+  }
+}
+
+
