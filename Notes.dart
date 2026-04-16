@@ -500,6 +500,39 @@ decoration: InputDecoration(
 
 
 
+
+// to get the data from TextField we can use
+
+
+final TextEditingController textEditingController = TextEditingController();
+// initilizating the controller
+
+Widget build(BuildContext context) {
+
+  return Scaffold(
+    body: TextField(
+
+            controller: textEditingController, // Here we assign the controller
+
+
+
+            decoration: InputDecoration(
+                hintText: "Please Entry Your Ammount",
+                hintStyle: const TextStyle(
+                  color: Colors.black
+                )
+              )
+          )
+  );
+ }
+
+
+
+
+
+
+
+
 //=================================  Padding & Container Widget =====================================
 Container(
   width: 200,
@@ -736,8 +769,6 @@ class MyClassForStateFul extends StatefulWidget{
   const MyClassForStateFul({super.key});
 
 
-
-
   // Inside this we need to  create a new state that can our class use
   @override
   State createState()=> State(); // this requires a Type of State. (State is a type like int,double,String etc)
@@ -795,3 +826,199 @@ class _CurrencyConverterMaterialPagee extends State<CurrencyConverterMaterialPag
 }
 
 
+
+
+// Dart code with statedul setup
+class CurrencyConverterMaterialPagee extends StatefulWidget{
+
+  CurrencyConverterMaterialPagee({super.key}){
+    print("Constructor");
+  }
+
+  @override
+  State<CurrencyConverterMaterialPagee> createState(){
+    print("Create State");
+    return _CurrencyConverterMaterialPagee();
+  }
+}
+class _CurrencyConverterMaterialPagee extends State<CurrencyConverterMaterialPagee>{
+
+  @override
+  Widget build(BuildContext context) {
+    print("Build Fn");
+  }
+}
+
+/* output:
+    
+    I/flutter ( 5328): Constructor
+    I/flutter ( 5328): Create State
+    I/flutter ( 5328): Build Fn
+
+*/
+
+
+
+// remember this example?????
+class MyApp extends StatelessWidget{
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    int x = 0;
+    return const scaffold(
+      body: Text(x.toString())
+      /*  
+          let say we change the value of x here. so what will happen after this?
+            1. the value of x will be changed !
+            2. since we didn't call build(buildcontext context). so we will not see any changes visually but x has already changed !
+
+          so how can we show the Text in app?
+
+          problem :
+          if we change the x value inside here then again call build() function 
+          it will build the text with x = 0 bcz thats how we written it and we can't use a varible outside of the build() 
+          so what can we do there we are stuck !!!!
+
+          Solution : we use satedful widget here
+
+      */
+    );
+  }
+}
+
+/* 
+  Note:
+  problem:  here to show the change we would call build() again but it can't be loaded in the app bcz then it will start with x = 0 which resets the value of x regardless what we
+    had previously.
+  
+  solution: we will use setState() method which is a method of the Sate class.
+
+*/
+
+
+// ==================================================================== setState() method =============================================================================
+
+// setSate can only be used inside of a State class and its child classes
+
+
+class _CurrencyConverterMaterialPagee extends State<CurrencyConverterMaterialPagee>{
+
+  double x = 0;
+  @override
+  Widget build(BuildContext context){
+    return MaterialApp(
+      home: Scaffold(
+              body: Container( // example of TextButton
+                      child: ElevatedButton(
+                        onPressed: (){
+
+                          // previously we call here the 
+                          // build(context);
+
+
+                          // Butnow  here we used setsate() so this will not reset the value of x. this only set the state doesn't interfere with code reseting like build
+                          setState(() {
+                            x = double.parse(textEditingController.text)*81;
+                          });
+
+
+                          /*
+                            we can also use this like 
+
+                            x = double.parse(textEditingController.text)*81;
+                            setState(() {}});
+
+                            this also works fine
+
+
+                          */
+
+                        },
+                        child: const Text("CONVERT")
+                      )
+                    )
+      )
+      );
+  }   
+}
+
+/* explain:  here the setSate notifys the flutter that there is a change in build function of the State class. 
+    so rebuild the elementary tree again or we can say build the widgets which are nessecery to rebuilt
+  
+  setSate only rebuilt that in inside the build functions.
+  unlike build() which will rebuilt the entire class which can reset value that we were facing problems
+
+
+
+  fact : how serSate knows what to rebuit?
+
+    This is why we use const on each widget as much we can so the setSate knows this is const so we don't have to rebuilt it 
+*/
+
+
+
+
+
+
+
+
+
+
+// ====================================================================== intiState() / SateLifeCycle ===================================
+
+
+
+//example 1
+class CurrencyConverterMaterialPagee extends StatefulWidget{
+  CurrencyConverterMaterialPagee({super.key}){
+    print("Constructor");
+  }
+  @override
+  State<CurrencyConverterMaterialPagee> createState(){
+    print("Create State");
+    return _CurrencyConverterMaterialPagee();
+  }
+}
+
+
+class _CurrencyConverterMaterialPagee extends State<CurrencyConverterMaterialPagee>{
+
+  // Lets imagine we have a async function here.
+
+  /*
+    this is were we wait for a data to be loaded in a variable.
+
+
+    problem:  so how the flutter will know that we need to wait here for a while to load data then execute the build method?
+
+    solution: We will overrride a Sate method that is initState() then we will put our async code inside of that function block
+
+  */
+  @override
+  void initState() {
+    super.initState();
+
+    // we will write our code here for the initSate after the function call
+    print("rebuild");
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    print("Build Fn");
+  }
+}
+
+/* output:
+
+  I/flutter ( 5328): Constructor
+  I/flutter ( 5328): Create State
+  I/flutter ( 5328): rebuild
+  I/flutter ( 5328): Build Fn
+
+*/
+
+
+
+
+//========== Widget Life cycle of stateful widgets

@@ -3,28 +3,28 @@ import 'package:flutter/material.dart';
 
 
 class CurrencyConverterMaterialPagee extends StatefulWidget{
-
   const CurrencyConverterMaterialPagee({super.key});
-
   @override
   State<CurrencyConverterMaterialPagee> createState()=>_CurrencyConverterMaterialPagee();
 }
 
 class _CurrencyConverterMaterialPagee extends State<CurrencyConverterMaterialPagee>{
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold();
+
+
+  double result = 0;
+  final TextEditingController textEditingController = TextEditingController();
+
+
+  void convert(){
+    setState(() {
+      result = double.parse(textEditingController.text)*80;
+    }
+    );
   }
-}
-
-
-class CurrencyConverterMaterialPage extends StatelessWidget {
-  const CurrencyConverterMaterialPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    double result = 0.00;
-    final TextEditingController textEditingController = TextEditingController();
+    print("rebuilt");
     final border = OutlineInputBorder(
       borderRadius: BorderRadius.circular(10),
       borderSide: const BorderSide(
@@ -53,7 +53,7 @@ class CurrencyConverterMaterialPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center ,
               children: [
                 Text(
-                  result.toString(),
+                  '${result!=0? result.toStringAsFixed(3):0} BDT',
                   style: const TextStyle(
                     fontSize: 45,
                     fontWeight: FontWeight.bold,
@@ -88,9 +88,7 @@ class CurrencyConverterMaterialPage extends StatelessWidget {
                 Container( // example of TextButton
                   padding: EdgeInsets.only(left: 10, right: 10),
                   child: ElevatedButton(
-                    onPressed: (){
-                      result = double.parse(textEditingController.text)*81;
-                    },
+                    onPressed: convert, // thi convert in a function we are passing the name only
                     style: TextButton.styleFrom(
                       foregroundColor: Colors.white,
                       backgroundColor: Colors.black,
