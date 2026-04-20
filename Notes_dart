@@ -79,7 +79,7 @@ class MyApp extends StatelessWidget{
 
 // like this
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart;
+import 'package:flutter/cupertino.dart';
 
 /* after importing how we make our app Follow that specefic design?
 
@@ -101,16 +101,74 @@ const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: "Currency Converter",   
+
+      // This is the title of the app that will be shown in the task manager of the phone 
+      // like when we long press the Home button of our smart phones
+      /* 
+        for android we can change title here just chnage the title: " another title"
+        for ios we need to change the title in the info.plist (search in vs code) file in the ios folder of our project
+      
+      */
       home: Text("This is a line")
     ); // Material
-  }
+}
 
-/* Look here we use MaterialApp Widget inside that we use a home otional named property which expects a widget
+/* 
+  Look here we use MaterialApp Widget inside that we use a home otional named property which expects a widget
    we used Text Widget here inside that we used a text to show !
 
    notice that we didn't use a text direction here. Bcz the MaterialApp retruns the text direction internally
 
 */
+
+
+
+// =================================  MaterialApp Title =====================================
+
+const MyApp({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: "Currency Converter",   
+
+      // This is the title of the app that will be shown in the task manager of the phone 
+      // like when we long press the Home button of our smart phones
+      /* 
+        for android we can change title here just chnage the title: " another title"
+        for ios we need to change the title in the info.plist (search in vs code) file in the ios folder of our project
+      
+      */
+      home: Text("This is a line")
+    ); // Material
+}
+
+
+
+// =================================  MaterialApp Theme =====================================\
+
+
+// without theme I have to maually set the color of my app in every page
+// what theme does is its gives me a global color that I can use in my app and I can also change it in one place 
+// and it will change in all the places where I used that theme color
+
+const MyApp({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: ThemeData(
+        primarySwatch: Colors.blue, // this is the primary color of the app that will be used in the app bar and other places where we need a primary color
+        scaffoldBackgroundColor: Colors.white, // this is the background color of the scaffold that will be used in all the scaffold in the app
+      ),
+      home: Text("This is a line")
+    ); // Material
+}
+
+
+
+
+
+
 
 
 
@@ -180,10 +238,6 @@ Widget build(BuildContext context) {
 
 
 
-
-
-
-
 //================================= BuildContext =====================================
 
 
@@ -210,6 +264,9 @@ class CurrencyConverterMaterialPage extends StatelessWidget {
 
    Every widget that is extended with Stateless or statefull I will get access to a BuildContex so Flutter can track it.
 */
+
+
+
 
 //=================================  Importing =====================================
 
@@ -534,8 +591,12 @@ Widget build(BuildContext context) {
 
 
 //=================================  Padding & Container Widget =====================================
+
+
+
+
 Container(
-  width: 200,
+  width: 200,    // this may vary with the size of the screen but it will take 200 pixel width
   height: 100,
   padding: EdgeInsets.all(16),
   margin: EdgeInsets.symmetric(vertical: 8),
@@ -663,6 +724,29 @@ Container( // example of TextButton
   )
 )
 
+
+
+// To take a full width button we can use SizedBox Widget or Container both.
+
+Container(
+  width: double.infinity, // this will take all the space left
+  child: Text("A Text")
+)
+
+sizedBox(
+  width: double.infinity, // this will take all the space left
+  child: Text("A Text")
+)
+
+// Note: if we only want to size it like take this much space then its good to use sizebox
+//        but if we want some designs we need to use Container so that we can design it
+
+
+
+
+
+
+
 // =============================================================== AppBar Widget =================================================
 /*  
   Appbar has many name perameter lets talk about 2
@@ -693,6 +777,41 @@ Scaffold(
     leading: Text("widget_1"), // leading argumnet of AppBar
   )
 )
+
+
+
+
+
+// we can also set app bar Designs or theme that we want to folow in the MaterialApp instead of Scaffold 
+
+/*
+  problem: let Say I have a Design of the App bar of Scafold in all pages. so what am I doing till now?
+            till now we individually set that designs in every pages that hard work
+
+  solution: Now we can use theme in the material app and set a theme that all the app bar will folow
+            here we are setting it once but all the pages are getting the page deisgn from the theme of the material app so we don't need to set it in every page
+
+*/
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: ThemeData.dark().copyWith(    // here copywith() will set the designs of all the appBar in the scaffold that we typed here. so we don't need to set it in every page
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.white,
+          elevation: 0,
+        ),
+      ),
+      debugShowCheckedModeBanner: false,
+      home: const WeatherScreen(),
+    );
+  }
+
+
+
 
 
 // ======================================================================  Stateful widgets ===================================
@@ -761,7 +880,7 @@ class MyApp extends StatelessWidget{
 }
 
 
-// how can we use syntax for StatefulWidgets ?
+//==================== how can we use syntax for StatefulWidgets ?
 
 // First we extend the class for Sateful
 class MyClassForStateFul extends StatefulWidget{
@@ -769,29 +888,29 @@ class MyClassForStateFul extends StatefulWidget{
   const MyClassForStateFul({super.key});
 
 
-  // Inside this we need to  create a new state that can our class use
+  // Inside this we need to  create a new state that canbe used in our Stateful class 
   @override
   State createState()=> State(); // this requires a Type of State. (State is a type like int,double,String etc)
-  // (Don't use this like this below there is a line that we gonna use)
+  // (Don't use this line like this. below there is a line that we gonna use)
 
   // but we can't use State() like this cz this is abstruct class so we also need to extend State class;
 
-  // so we will use this line
+  
   @override
-  State createState()=> _MyClassForStateFul_State();
+  State createState()=> _MyClassForStateFul_State(); // so we will use this line
 }
 
 
 // since we can't use a abstruct State we will create one and pass it to our public statefulWidget class
 class _MyPrivateClassForStateFul_State extends State{
-  // here I have created my own State that I made private for sequirity. if I make it public class and use it still that will work in both
+  // here I have created my own State that I made private for secuirity. if I make it public class and use it still that will work in both
   // but its good practise to use as private
 
 
 
 
-  double x = 23.0; // in this state we can use varible outsite of the function.
-  // we only can use this in a state class not in stateless or statefull class bcz both are immutable class
+  double x = 23.0; // in this state we can use varible outsite of the build function.
+  // we only can use this in a state class. Not in stateless or statefull class bcz both are immutable class
 
 
 
@@ -828,7 +947,7 @@ class _CurrencyConverterMaterialPagee extends State<CurrencyConverterMaterialPag
 
 
 
-// Dart code with statedul setup
+// Dart code with stateful setup
 class CurrencyConverterMaterialPagee extends StatefulWidget{
 
   CurrencyConverterMaterialPagee({super.key}){
@@ -892,54 +1011,55 @@ class MyApp extends StatelessWidget{
   problem:  here to show the change we would call build() again but it can't be loaded in the app bcz then it will start with x = 0 which resets the value of x regardless what we
     had previously.
   
-  solution: we will use setState() method which is a method of the Sate class.
+  solution: we will use setState() method which is a method of the State class.
 
 */
 
 
 // ==================================================================== setState() method =============================================================================
 
-// setSate can only be used inside of a State class and its child classes
+// setSate can only be used inside of a State class and its child classes 
+// to rebuild the widget again without resetting the value of the variable that we are using in the state class
 
 
-class _CurrencyConverterMaterialPagee extends State<CurrencyConverterMaterialPagee>{
+// in the previous example we were calling the build() function to re build the widgets but that was resetting the value of x to 0.
 
   double x = 0;
   @override
   Widget build(BuildContext context){
     return MaterialApp(
       home: Scaffold(
-              body: Container( // example of TextButton
-                      child: ElevatedButton(
-                        onPressed: (){
+            body: Container( // example of TextButton
+                    child: ElevatedButton(
+                      onPressed: (){
 
-                          // previously we call here the 
-                          // build(context);
-
-
-                          // Butnow  here we used setsate() so this will not reset the value of x. this only set the state doesn't interfere with code reseting like build
-                          setState(() {
-                            x = double.parse(textEditingController.text)*81;
-                          });
+                        // previously we call here the 
+                        // build(context);
 
 
-                          /*
-                            we can also use this like 
-
-                            x = double.parse(textEditingController.text)*81;
-                            setState(() {}});
-
-                            this also works fine
+                        // But now  here we used setsate() so this will not reset the value of x. this only set the state doesn't interfere with code reseting like build
+                        setState(() {
+                          x = double.parse(textEditingController.text)*81;
+                        });
 
 
-                          */
+                        /*
+                          we can also use this like 
 
-                        },
-                        child: const Text("CONVERT")
-                      )
+                          x = double.parse(textEditingController.text)*81;
+                          setState(() {}});
+
+                          this also works fine
+
+
+                        */
+
+                      },
+                      child: const Text("CONVERT")
                     )
+            )
       )
-      );
+    );
   }   
 }
 
@@ -957,16 +1077,10 @@ class _CurrencyConverterMaterialPagee extends State<CurrencyConverterMaterialPag
 */
 
 
-
-
-
-
-
-
-
-
 // ====================================================================== intiState() / SateLifeCycle ===================================
 
+// in a State the initState() is called first before the build() method is called. 
+//so we can use this to initialize any data that we need to use in the build method. 
 
 
 //example 1
@@ -992,14 +1106,14 @@ class _CurrencyConverterMaterialPagee extends State<CurrencyConverterMaterialPag
 
     problem:  so how the flutter will know that we need to wait here for a while to load data then execute the build method?
 
-    solution: We will overrride a Sate method that is initState() then we will put our async code inside of that function block
+    solution: We will overrride a State method that is initState() then we will put our async code inside of that function block
 
   */
   @override
   void initState() {
     super.initState();
 
-    // we will write our code here for the initSate after the function call
+    // we will write our async code here for the initState after the function call
     print("rebuild");
   }
 
@@ -1020,5 +1134,408 @@ class _CurrencyConverterMaterialPagee extends State<CurrencyConverterMaterialPag
 
 
 
+//============================================================== dispose()  ==============================================================
 
-//========== Widget Life cycle of stateful widgets
+/*
+
+  dispose() is a method of the State class that is called when the widget is removed from the widget tree. 
+  it is used to clean up any resources that are being used by the widget.
+
+  for example if we have a stream or a timer or a controller or a Future that is being used in the widget 
+    we can dispose it in the dispose() method to free up the resources.
+
+  like this:
+*/
+void dispose() {
+  textEditingController.dispose();
+  super.dispose();
+} // this should be called in the State class to dispose the controller when the widget is removed from the widget tree.
+
+class _CurrencyConverterMaterialPagee extends State<CurrencyConverterMaterialPagee>{
+  final TextEditingController textEditingController = TextEditingController();
+
+  @override
+  void initState() {   
+    // This is called before anything is built in the widget tree (or before the build method is called) 
+    // so we can use this to initialize any data or any variable that we need to use in the build method.
+    super.initState();
+    print("rebuild");
+  }
+
+  @override
+  void dispose() {
+    // this is called when the widget is removed from the widget tree so we can use this to dispose any resources that we are using in the widget.
+    textEditingController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(....);
+  }
+}
+
+
+// =============================================================  didchangeDependencies()  =============================================================
+
+
+
+// this method is called very rarely but it is also a method of the State class that is called when the dependencies of the widget change.
+
+/*
+  this is a method of the State class that is called when the dependencies of the widget change. 
+  it is used to do any work that needs to be done when the dependencies of the widget change.
+
+  for example if we have a stream or a Future that is being used in the widget and we want to listen to it or we want to get the data 
+  from it when it changes then we can use this method to do that.
+
+
+  like this:
+*/
+
+class _CurrencyConverterMaterialPagee extends State<CurrencyConverterMaterialPagee>{
+  final TextEditingController textEditingController = TextEditingController();
+
+  @override
+  void initState() {   
+    // This is called before anything is built in the widget tree (or before the build method is called) 
+    // so we can use this to initialize any data or any variable that we need to use in the build method.
+    super.initState();
+    print("rebuild");
+  }
+
+
+  // this is called right after the initState() method and before the build() method is called. 
+  //so we can use this to do any work that needs to be done before the build method is called.
+  @override
+  void didChangeDependencies() {
+    // this is called when the dependencies of the widget change. so we can use this to do any work that needs to be done when the dependencies of the widget change.
+    super.didChangeDependencies();
+    print("dependencies changed");
+  }
+
+  // this method is called when we change the State of the widget
+  @override
+  void dispose() {
+    // this is called when the widget is removed from the widget tree so we can use this to dispose any resources that we are using in the widget.
+    textEditingController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(....);
+  }
+}
+
+
+// =============================================================  didUpdateWidget()  =============================================================
+
+// this is a method of the State class that is called when the widget is updated.
+// this method runs whenever the widget attached to the state in replaced with another widget.
+
+@override
+void didUpdateWidget(covariant CurrencyConverterMaterialPagee oldWidget) {
+  // this is called when the widget is updated. so we can use this to do any work that needs to be done when the widget is updated.
+  super.didUpdateWidget(oldWidget);
+  print("widget updated");
+}
+
+
+/* 
+  here the didUpdateWidget() is called when the widget is updated. so we can use this to do any work that needs to be done when the widget is updated.
+
+  for example if we have a stream or a Future that is being used in the widget and we want to listen to it or we want to get the data 
+  from it when it changes then we can use this method to do that.
+
+*/
+
+class _CurrencyConverterMaterialPagee extends State<CurrencyConverterMaterialPagee>{
+  final TextEditingController textEditingController = TextEditingController();
+
+  @override
+  void initState() {   
+    super.initState();
+    print("rebuild");
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    print("dependencies changed");
+  }
+
+  @override
+  void didUpdateWidget(covariant CurrencyConverterMaterialPagee oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    print("widget updated");
+  }
+
+  @override
+  void dispose() {
+    textEditingController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(....);
+  }
+}
+
+
+
+// =============================================================  InkWell() / GestureDetector()  =============================================================
+
+/*
+
+  InkWell and GestureDetector are two widgets that are used to detect gestures on a widget. 
+  they are used to make a widget clickable or to detect any gesture on a widget. both are kind of similar but InkWell gives us a visual feedback 
+  when we tap on the widget but GestureDetector does not give us any visual feedback when we tap on the widget.
+
+  for example if we want to make a container or Icon clickable then we can wrap it with an InkWell or a GestureDetector and use the onTap() method to detect the tap gesture.
+  like this:
+*/
+
+// example of GestureDetector
+Scaffold(
+appBar: AppBar(
+  actions: [
+    GestureDetector(     
+
+      // here we are using GestureDetector to make the Icon clickable. But this does not give us any visual feedback when we tap on the Icon. 
+      //so we can use InkWell instead of GestureDetector to get the visual feedback when we tap on the Icon.
+
+      onTap: (){
+        print('Refresh');
+      },
+      child: Icon(Icons.refresh)
+      ),
+  ],
+  centerTitle: true,
+  title: const Text('Weather App',
+    style: TextStyle(
+      fontWeight: FontWeight.bold,
+      )
+    ),
+  ),
+)
+
+
+// example of InkWell
+Scaffold(
+appBar: AppBar(
+  actions: [
+    InkWell(     
+      // here we are using InkWell to make the Icon clickable. This gives us visual feedback when we tap on the Icon.
+      //so we can use InkWell instead of GestureDetector to get the visual feedback when we tap on the Icon.
+
+      onTap: (){
+        print('Refresh');
+      },
+      child: Icon(Icons.refresh)
+      ),
+  ],
+  centerTitle: true,
+  title: const Text('Weather App',
+    style: TextStyle(
+      fontWeight: FontWeight.bold,
+      )
+    ),
+  ),
+)
+
+// Note:  InkWell has less features then GestureDetector
+
+
+
+// =============================================================  listview.builder()  =============================================================
+
+/*
+    A ListView is just a vertical list that you can scroll through.
+
+      Example in real life:
+        Contacts in your phone
+        WhatsApp chats
+        Expense list in your app
+
+
+  Imagine we have 1000 entries we can build them all at once but that will take a lot of time and resources. 
+    so instead of building all the entries at once we can use ListView.builder() to build only the entries that are visible on the screen and when we scroll down 
+    it will build the next entries and so on.
+
+*/
+
+// basic example of ListView.builder()
+ListView.builder(
+  itemCount: 10,                    // number of items we want to build
+  itemBuilder: (context, index) {     // this is a function that takes the context and index as parameters and returns a widget that we want to build for each item.
+    return Text("Item $index");
+  },
+)
+
+
+// ============================================================= ClipRRect() / BackdropFilter()  =============================================================
+
+
+// BackdropFilter applies effects (like blur) to whatever is behind it, not its child.
+
+// Basic example of BackdropFilter
+BackdropFilter(
+  filter: ImageFilter.blur(sigmaX:10, sigmaY: 10),  // for Y it adds blur to both side Y axis. and for X it adds blur to both side X axis.
+  child: Padding(...),
+)
+/* Note: BackdropFilter must have something behind it, usually inside a Stack.
+
+        Otherwise:
+        ❌ No blur will be visible
+
+*/
+
+
+
+/* ClipRRect clips (cuts) its child into a rounded rectangle.
+
+    Think:
+
+      “Scissors cutting widget shape”
+
+
+*/
+// Basic example of ClipRRect
+ClipRRect(
+  borderRadius: BorderRadius.circular(20),
+  child: Image.network("https://picsum.photos/200"),
+)
+
+/*  Note:
+
+    Without ClipRRect → image is square
+    With it → rounded corners
+
+*/
+
+// inside of ClipRRect if we  use BackdropFilter then ClipRRect prevents blur from overflowing outside the rounded corners, ensuring a neat look.
+
+// Example of using ClipRRect with BackdropFilter
+ClipRRect(
+  borderRadius: BorderRadius.circular(20),
+  child: BackdropFilter(
+    filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+    child: Container(
+      color: Colors.white.withOpacity(0.2),
+      child: Text("Blur Card"),
+    ),
+  ),
+)
+
+// ====================================================================== Align() ===================================================== 
+
+// if we want to align anything we can use container or align widget for that
+
+// example of Align
+Align(
+  alignment: Alignment.centerLeft,
+  child: const Text("Weather Forecast",
+    style: TextStyle(
+      fontSize: 24,
+      fontWeight: FontWeight.bold,
+    ),
+  ),
+),
+
+// example of Container alignment
+Container(
+  alignment: Alignment.centerLeft,
+  child: const Text("Weather Forecast",
+    style: TextStyle(
+      fontSize: 24,
+      fontWeight: FontWeight.bold,
+    ),
+  ),
+)
+
+// both does same thing here but there are more options in the container not only realed to alignmnet only unlike Align which is only for alignment. 
+//so if we want to do more than just alignment then we can use Container otherwise Align is good for only alignment purpose.
+
+
+// ==============================================================   SingleChildScrollView Widget  =============================================================
+
+
+// SingleChildScrollView Widget is a widget that allows us to scroll a single child widget.
+
+// for example let say we have a Row
+Row(
+  children: [
+      SizedBox(...),
+      SizedBox(...),             // problem:  herre lets imagine we have these cards in a row in our screen that will not be allowed our screen will cut the rest
+      SizedBox(...),             // of the cards and we will not be able to see them all. so what can we do there?
+      SizedBox(...),
+      SizedBox(...),             // Solution: we will use SingleChildScrollView() widget to make the row scrollable so we can see all the cards by scrolling horizontally.
+      SizedBox(...),
+      SizedBox(...),
+  ],
+),
+
+// example of using SingleChildScrollView with Row
+SingleChildScrollView(
+  scrollDirection: Axis.horizontal, // this will make the row scrollable horizontally. if we want to scroll vertically then we can use Axis.vertical
+  child: Row(
+    children: [
+      SizedBox(..),
+      SizedBox(...),             // now we can see all the cards by scrolling horizontally.
+      SizedBox(...),
+      SizedBox(...),
+      SizedBox(...),
+      SizedBox(...),
+      SizedBox(...),
+    ],
+  )
+)
+// Note:  SingleChildScrollView is not recommended for large lists of items. for that we can use ListView.builder() which is more efficient for large lists.
+
+
+
+
+
+// ============================================================= Passing Argument to Create a widget class =============================================================
+
+
+/* Problem: let say we want to make a widget 1000 times should we build it and copy paste 100 times? no that will be hard work and also not a good practice. 
+    so what can we do there?
+
+
+  Solution: we can pass arguments to the widget class and use those arguments to build the widget. 
+     so we can create a widget class that takes arguments and use those arguments to build the widget.
+*/
+
+// create as much as widget as we want by passing different arguments to the widget class
+class AdditionalInfoItem extends StatelessWidget {
+  final IconData icons;
+  final String label;     // using final bcz all widget class are immutable so we can't change the value of these variables after they are initialized.
+  final String value;
+
+  // const AdditionalInfoItem(this.icons, this.label, this.value, {super.key,});
+  // this is a positional parameter constructor (just here for reference that we can also do with this way)
+
+  const AdditionalInfoItem({required this.icons, required this.label, required this.value, super.key});
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+            child: Column(
+              children: [
+                Icon(icons, size: 34),
+                SizedBox(height: 8),
+                Text(label),
+                SizedBox(height: 4),
+                Text(value,
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          );
+  }
+}

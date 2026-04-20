@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 
@@ -20,6 +19,12 @@ class _CurrencyConverterMaterialPagee extends State<CurrencyConverterMaterialPag
       result = double.parse(textEditingController.text)*80;
     }
     );
+  }
+
+  @override
+  void dispose() {
+    textEditingController.dispose();
+    super.dispose();
   }
 
   @override
@@ -88,7 +93,7 @@ class _CurrencyConverterMaterialPagee extends State<CurrencyConverterMaterialPag
                 Container( // example of TextButton
                   padding: EdgeInsets.only(left: 10, right: 10),
                   child: ElevatedButton(
-                    onPressed: convert, // thi convert in a function we are passing the name only
+                    onPressed: convert, // this convert in a function we are passing the name only
                     style: TextButton.styleFrom(
                       foregroundColor: Colors.white,
                       backgroundColor: Colors.black,
