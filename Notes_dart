@@ -1029,39 +1029,95 @@ class MyApp extends StatelessWidget{
   Widget build(BuildContext context){
     return MaterialApp(
       home: Scaffold(
-            body: Container( // example of TextButton
-                    child: ElevatedButton(
-                      onPressed: (){
+        body: Container( // example of TextButton
+          child: ElevatedButton(
+            onPressed: (){
 
-                        // previously we call here the 
-                        // build(context);
-
-
-                        // But now  here we used setsate() so this will not reset the value of x. this only set the state doesn't interfere with code reseting like build
-                        setState(() {
-                          x = double.parse(textEditingController.text)*81;
-                        });
+              // previously we call here the 
+              // build(context);
 
 
-                        /*
-                          we can also use this like 
-
-                          x = double.parse(textEditingController.text)*81;
-                          setState(() {}});
-
-                          this also works fine
+              // But now  here we used setsate() so this will not reset the value of x. this only set the state doesn't interfere with code reseting like build
+              setState(() {
+                x = double.parse(textEditingController.text)*81;
+              });
 
 
-                        */
+              /*
+                we can also use this like 
 
-                      },
-                      child: const Text("CONVERT")
-                    )
-            )
+                x = double.parse(textEditingController.text)*81;
+                setState(() {}});
+
+                this also works fine
+
+
+              */
+
+            },
+            child: const Text("CONVERT")
+          )
+        )
       )
     );
   }   
 }
+
+/* Note: here we can't use setState() in the body of the State. (we can use it in the other functions but not in the body of the state)
+ bcz the body of the state is for defining the properties and functions that we want to use in the state class. so we can't use setState() 
+ 
+
+
+ ** we can use setSate as many times as we want in the state class but we can't use it in the body of the state class. **
+ for example :
+*/
+
+
+// example :
+class _WeatherScreenState extends State<WeatherScreen> {
+
+  double temp = 0;
+  bool isLoading = false;
+  final apiKey = ApiConfig.weatherApiKey;
+  final cityName = "Bangladesh";
+  final shortformat = "BD";
+  
+  Future getCurrentWeather() async {
+    print("Inside of State_API_Call");
+    try {
+
+      setState(() {         // used here
+        isLoading = true;
+      });
+
+      print("Inside of State_API_Call_tryBlock");
+      final result = await http.get(Uri.parse("https://api.openweathermap.org/data/2.5/forecast?q=$cityName,$shortformat&APPID=$apiKey"));
+      final data = jsonDecode(result.body);
+      if(data['cod'] != "200") {
+        throw "Error Occurred !";
+      }
+      
+      setState(() {        // also used here
+        temp = data['list'][0]['main']['temp'];
+        isLoading = false;
+      });
+      print("api call done");
+
+    } catch (e) {
+      print("Error fetching weather data: $e");
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    retrurn Scaffold();
+  }
+}
+
+
+
+
+
 
 /* explain:  here the setSate notifys the flutter that there is a change in build function of the State class. 
     so rebuild the elementary tree again or we can say build the widgets which are nessecery to rebuilt
@@ -1229,6 +1285,7 @@ class _CurrencyConverterMaterialPagee extends State<CurrencyConverterMaterialPag
 }
 
 
+
 // =============================================================  didUpdateWidget()  =============================================================
 
 // this is a method of the State class that is called when the widget is updated.
@@ -1375,6 +1432,8 @@ ListView.builder(
 )
 
 
+
+
 // ============================================================= ClipRRect() / BackdropFilter()  =============================================================
 
 
@@ -1429,6 +1488,9 @@ ClipRRect(
   ),
 )
 
+
+
+
 // ====================================================================== Align() ===================================================== 
 
 // if we want to align anything we can use container or align widget for that
@@ -1457,6 +1519,8 @@ Container(
 
 // both does same thing here but there are more options in the container not only realed to alignmnet only unlike Align which is only for alignment. 
 //so if we want to do more than just alignment then we can use Container otherwise Align is good for only alignment purpose.
+
+
 
 
 // ==============================================================   SingleChildScrollView Widget  =============================================================
@@ -1539,3 +1603,244 @@ class AdditionalInfoItem extends StatelessWidget {
           );
   }
 }
+
+
+// ========================================== Loading Indicator Widget  =============================================================
+
+
+class _WeatherScreenState extends State<WeatherScreen> {
+  bool isLoading = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: isLoading ? Center(child: CircularProgressIndicator()) : Container(), // here this can be any other widget not only caontainer()
+    );
+  }
+}
+
+/* 
+    Here the CircularProgressIndicator() is a widget that shows a loading indicator. 
+    With ternary Oparetor if it true then the  CircularProgressIndicator() is shown and if false then the Container() is shown. 
+    so we can use this to show a loading indicator when we are fetching data from an API or doing any async work.
+
+
+
+  Note: if we use CircularProgressIndicator.adaptive() this will automaicty detect the deive a appliced that deisign 
+        like in android it use material design and in ios it use cupertino design. so this is a good practice to use adaptive() to show the loading indicator 
+        that is suitable for the device.
+
+*/
+
+
+
+
+
+// =============================================================  FutureBuilder Widget  =============================================================
+
+
+// let say we have a build function inside of a State Class
+Widget build(BuildContext context) {
+    print("Inside of Build Method");
+    return  Scaffold(
+      appBar: AppBar(
+        title: Text("Weather App")),
+        body: Container(....) 
+        // imagine main Parent widget of the body. all the UI widgets and the widget tree starts from here. and this would stay on the body opf the scaffold
+    );
+}
+
+/*  problem: here we have a build function that is building the widget tree but we want to show a loading indicator when we are 
+      fetching data from an API or doing any async work. so what can we do there?
+
+
+  solution:
+    option- 1. one we manually set a boolean variable isLoading to true when we start fetching data and set it to false when we are done 
+                fetching data and use ternary operator to show the loading indicator or the main widget based on the value of isLoading. 
+                but this is not a good practice and also not efficient. because if things get complecated we have to manually handle all 
+                the errors and with wthat varibale and also we have to manually set the state to rebuild the widget tree when we are done 
+                fetching data ( remember in setState() section ) . so this is not a good practice.
+  
+  
+   option-2  we can use FutureBuilder() widget to show a loading indicator when we are fetching data from an API or doing any async work.
+*/
+
+
+
+
+// to that same build function we can use FutureBuilder() widget like this
+  Widget build(BuildContext context) {
+    print("Inside of Build Method");
+    return  Scaffold(
+      appBar: AppBar(
+        title: Text("Weather App")),
+
+        body:FutureBuilder(
+          future: getCurrentWeather(), // this is a function that returns a Future.
+          builder:(context, snapshot) { 
+            
+            // here the sanpshot give the state of the Future. it has three states. 
+
+            //1. ConnectionState.waiting (when the Future is still running) 
+            //2. ConnectionState.done (when the Future is completed) 
+            //3. ConnectionState.error (when there is an error in the Future)
+            
+            
+            print(snapshot.connectionState); 
+            // this will print the state of the Future. it will set of waiting first then after loading it will set to done. if there is an error it will set to error.
+
+
+            // we can also check if there is an error in the Future like this
+            if (snapshot.hasError) {
+              return Text("Error: ${snapshot.error}");
+            }
+
+
+            return Padding() 
+            // imagine main Parent widget of the body. all the UI widgets and the widget tree starts from here. and this would stay on the body opf the scaffold
+          }
+        )
+    );
+  }
+
+
+//============================================================= showDialog()  =============================================================
+
+
+showDialog(
+  context: context,
+  builder: (context) {
+    return AlertDialog(
+      title: Text("Hello!"),
+      content: Text("This is a simple dialog box."),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context); // close the dialog
+          },
+          child: Text("OK"),
+        ),
+      ],
+    );
+  },
+);
+
+/*
+  Think of it like:
+      “Hey app, pause everything and show this small message box.”
+
+  Button click
+    ↓
+  showDialog()
+    ↓
+  Flutter freezes current screen
+    ↓
+  Shows popup UI (AlertDialog)
+    ↓
+  User clicks button
+    ↓
+  Navigator.pop() closes it
+    ↓
+  Back to screen
+
+*/
+
+
+// =============================================================  Provider  =============================================================
+
+
+/* 
+  in Flutter, a provider is a way to manage state and share data across the widget tree. 
+  it is a package that allows us to create a central place to store our data and then access that data from any widget in the widget tree 
+  without having to pass it down through the widget tree manually.
+
+
+
+  problem:
+      like if we have to send a data from let say one widget to another we have pass it like child to child to child.
+      page1  ->  page2  ->  page3  ->  page4  ->  page5
+        so we need a way to pass a data from page1 to page5 without having to pass it through all the intermediate pages.
+
+
+
+  solution: we use provider so that we store just in one place but can access from another palces
+
+
+
+  there are some type of provider that we can use in our app like 
+    1. ChangeNotifierProvider
+    2. FutureProvider
+    3. StreamProvider
+    4. provider (this is the basic provider that we can use to create our own provider)
+
+*/
+
+
+// changeNotifierProvider example
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (_) => ActivityManagementProvider(),  
+
+      //  here ActivityManagementProvider is a extended of a changeNotifier class that we have created to manage our state and data. 
+      //  this is the provider that we will use to manage our state and data.
+
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: const MainPage(),
+      ),
+    );
+  }
+}
+
+class ActivityManagementProvider extends ChangeNotifier {
+  // this is the provider class that we will use to manage our state and data. 
+
+  //  we can create any variable or function here that we want to use in anyware of our app and then we can access it from any widget in the widget tree 
+  //   Provider.of<ActivityManagementProvider>(context) or context.watch<ActivityManagementProvider>() or 
+  //  context.read<ActivityManagementProvider>().
+
+  int _counter = 0;
+
+  int get counter => _counter;
+
+  void incrementCounter() {
+    _counter++;
+    notifyListeners(); // this is used to notify the listeners that there is a change in the state so that they can rebuild the widget tree with the new data.
+  }
+}
+
+
+final provider = context.read<ActivityManagementProvider>(); 
+/*  
+  this is how we can access the provider from any widget in the widget tree. 
+  we can use this to call any function or access any variable that we have in the provider class.
+
+    read() is used because:
+    we just want to call a function that is defined inside of the ActivityManagementProvider class
+    no need to rebuild here 
+*/
+
+final provider =context.watch<ActivityManagementProvider>();       // here both line are same 
+final provider = Provider.of<ActivityManagementProvider>(context);
+
+/*  
+   provider is listenig or we can say just waiting for any change in the data that is defined in the ActivityManagementProvider class 
+    and when there is a change it will rebuild the widget tree with the new data.
+    if we call the function incrementCounter() that is defined in the provider class 
+    then it will change the value of counter and then it will call notifyListeners() which will notify the listeners that there is a change in the state 
+    so that they can rebuild the widget tree with the new data.
+  
+
+
+    Gets provider
+    Listens to changes
+    Rebuilds UI when data changes
+*/
+
+
+final provider = Provider.of<ActivityManagementProvider>(context, listen: false);  // this both line are same
+final provider = context.read<ActivityManagementProvider>(); 
